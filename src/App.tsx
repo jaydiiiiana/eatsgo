@@ -18,14 +18,7 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
   return <>{children}</>;
 };
 
-const RootRedirect = () => {
-  const { user, isAdmin, loading } = useAuth();
-  
-  if (loading) return <div style={{ padding: '2rem', textAlign: 'center' }}>Loading...</div>;
-  if (!user) return <Navigate to="/login" />;
-  
-  return <Navigate to={isAdmin ? "/admin" : "/menu"} replace />;
-};
+import LandingPage from './pages/LandingPage';
 
 function App() {
   return (
@@ -36,7 +29,7 @@ function App() {
             <div className="container" style={{ paddingBottom: '120px', paddingTop: '1.5rem' }}>
               <Routes>
                 <Route path="/login" element={<AuthPage />} />
-                <Route path="/" element={<RootRedirect />} />
+                <Route path="/" element={<LandingPage />} />
                 <Route 
                   path="/menu" 
                   element={
