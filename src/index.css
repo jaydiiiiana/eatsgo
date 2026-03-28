@@ -1,0 +1,290 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;600;800&display=swap');
+
+:root {
+  /* Earthy Minimalist Palette */
+  --primary-h: 28;
+  --primary-s: 25%;
+  --primary-l: 45%;
+  --primary: #8D6E63; /* Warm Brown */
+  --primary-dark: #5D4037;
+  --primary-light: #A68B6D; /* Khaki */
+  --primary-alpha: rgba(141, 110, 99, 0.1);
+  
+  --secondary: #4E342E; /* Dark Cocoa */
+  --background: #FAF9F6; /* Off-white / Cream */
+  --surface: #FFFFFF;
+  --text-main: #3E2723; /* Deep Brown */
+  --text-muted: #8D8D8D;
+  
+  --success: #6D8B74; /* Sage Green */
+  --warning: #D4A373; /* Muted Gold */
+  --danger: #BC8F8F; /* Rosy Brown / Muted Red */
+  
+  --shadow-sm: 0 4px 12px rgba(62, 39, 35, 0.05);
+  --shadow-md: 0 12px 24px rgba(62, 39, 35, 0.08);
+  --shadow-lg: 0 24px 48px rgba(62, 39, 35, 0.12);
+  
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 40px;
+  --radius-full: 9999px;
+  
+  --glass: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(141, 110, 99, 0.1);
+  
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  line-height: 1.6;
+  color: var(--text-main);
+  background-color: var(--background);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+/* Layout System */
+.container {
+  max-width: 800px; /* More focused, app-like width */
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1.25rem;
+  }
+}
+
+/* Components */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(141, 110, 99, 0.05);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.glass-morphism {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: inherit;
+  gap: 0.6rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 8px 20px -6px rgba(141, 110, 99, 0.4);
+}
+
+.btn-primary:hover {
+  background: var(--primary-dark);
+  box-shadow: 0 12px 24px -6px rgba(141, 110, 99, 0.5);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #EFEBE9;
+  color: var(--text-main);
+}
+
+.btn-secondary:hover {
+  background: #D7CCC8;
+}
+
+/* Tab Segment System */
+.admin-tabs {
+  background: #EEE;
+  padding: 4px;
+  border-radius: 14px;
+  display: flex;
+  margin-bottom: 2rem;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.admin-tab-item {
+  flex: 1;
+  padding: 12px 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 700;
+  border-radius: 11px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.75rem;
+}
+
+.admin-tab-item.active {
+  background: white;
+  color: var(--primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+
+.glass-morphism {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+}
+
+/* For mobile web app feel */
+input, select, textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid #E9ECEF;
+  background: white;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.card {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 1rem;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.2s ease;
+}
+
+.card:active {
+  transform: scale(0.98);
+}
+
+.nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 70px;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  z-index: 1000;
+}
+
+.nav-item {
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.75rem;
+  text-decoration: none;
+  gap: 4px;
+}
+
+.nav-item.active {
+  color: var(--primary);
+}
+
+.cart-badge {
+  position: absolute;
+  top: 4px;
+  right: 50%;
+  transform: translateX(20px);
+  background: var(--danger);
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 800;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid white;
+}
+
+/* Modal Overlay & Sheet Styles */
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end; /* Bottom sheet for mobile */
+  justify-content: center;
+}
+
+.modal-content {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 1.5rem;
+  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  overflow-y: auto;
+  max-height: 90vh;
+  box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+}
+
+@media (min-width: 480px) {
+  .modal-overlay {
+    align-items: center;
+    padding: 1.5rem;
+  }
+  .modal-content {
+    border-radius: var(--radius-lg);
+    width: 100%;
+  }
+}
+
