@@ -70,11 +70,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         if (session?.user) {
           await fetchProfile(session.user.id);
         }
-        setLoading(false);
       } catch (err) {
         console.error('Error during auth setup:', err);
         setUser(null);
         setProfile(null);
+      } finally {
         setLoading(false);
       }
     };
@@ -83,6 +83,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       try {
+        // If it's a mock user (Master Admin), don't overwrite it with null
+        if (user?.id === 'master-admin-000' && !session) return;
+
         setUser(session?.user ?? null);
         if (session?.user) {
           await fetchProfile(session.user.id);
@@ -91,6 +94,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       } catch (err) {
         console.error('Error during auth state change:', err);
+      } finally {
+        setLoading(false);
       }
     });
 
