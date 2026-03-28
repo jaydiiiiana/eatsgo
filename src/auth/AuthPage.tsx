@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import LoginView from './LoginView';
 import RegisterView from './RegisterView';
 
@@ -8,9 +9,16 @@ const AuthPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { forceAdminLogin } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (identifier: string, pass: string) => {
+    // 1. Check for Master Admin Bypass
+    if (identifier === 'eatsgo@gmail.com' && pass === 'admeatsgo2024') {
+      forceAdminLogin();
+      navigate('/admin');
+      return;
+    }
     setLoading(true);
     setError(null);
     try {
