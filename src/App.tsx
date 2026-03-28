@@ -25,41 +25,42 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-          <main style={{ minHeight: '100vh', background: 'var(--background)' }}>
-            <div className="container" style={{ paddingBottom: '120px', paddingTop: '1.5rem' }}>
-              <Routes>
-                <Route path="/login" element={<AuthPage />} />
-                <Route path="/" element={<LandingPage />} />
-                <Route 
-                  path="/menu" 
-                  element={
-                    <ProtectedRoute>
-                      <Home />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/cart" 
-                  element={
-                    <ProtectedRoute>
-                      <CartPage />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route 
-                  path="/admin/*" 
-                  element={
-                    <ProtectedRoute adminOnly>
-                      <AdminDashboard />
-                    </ProtectedRoute>
-                  } 
-                />
-                <Route path="*" element={<Navigate to="/" />} />
-              </Routes>
-            </div>
-          </main>
-
-          <Navigation />
+          <div className="app-shell">
+            <main style={{ minHeight: '100vh' }}>
+              <div className="container" style={{ paddingBottom: '120px', paddingTop: '1.5rem' }}>
+                <Routes>
+                  <Route path="/login" element={<AuthPage />} />
+                  <Route path="/" element={<LandingPage />} />
+                  <Route 
+                    path="/menu" 
+                    element={
+                      <ProtectedRoute>
+                        <Home />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/cart" 
+                    element={
+                      <ProtectedRoute>
+                        <CartPage />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route 
+                    path="/admin/*" 
+                    element={
+                      <ProtectedRoute adminOnly>
+                        <AdminDashboard />
+                      </ProtectedRoute>
+                    } 
+                  />
+                  <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+              </div>
+            </main>
+            <Navigation />
+          </div>
         </Router>
       </CartProvider>
     </AuthProvider>

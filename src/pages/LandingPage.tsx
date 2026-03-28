@@ -46,117 +46,114 @@ const LandingPage = () => {
 
       {/* Hero Section */}
       <section style={{ 
-        minHeight: '100vh', 
+        minHeight: '80vh', 
         display: 'flex', 
         flexDirection: 'column', 
         alignItems: 'center', 
         justifyContent: 'center',
-        padding: '6rem 1.5rem',
+        padding: '5rem 1.5rem 3rem',
         textAlign: 'center',
         position: 'relative',
         overflow: 'hidden'
       }}>
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          style={{ position: 'relative', zIndex: 2, maxWidth: '600px' }}
+          style={{ position: 'relative', zIndex: 2 }}
         >
           <span style={{ 
             color: 'var(--primary)', 
             fontWeight: 800, 
             letterSpacing: '0.1em', 
-            fontSize: '0.8rem', 
+            fontSize: '0.75rem', 
             textTransform: 'uppercase',
-            marginBottom: '1rem',
+            marginBottom: '0.75rem',
             display: 'block'
           }}>Boutique Pinoy Dessert Experience</span>
           
-          <h1 style={{ fontSize: '4rem', marginBottom: '1.5rem', lineHeight: 1.1 }}>
+          <h1 style={{ fontSize: '2.8rem', marginBottom: '1.25rem', lineHeight: 1.1, letterSpacing: '-0.04em' }}>
             Artisan <span style={{ color: 'var(--primary)' }}>Desserts</span> <br />
             with a Pinoy Soul.
           </h1>
           
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', marginBottom: '3rem', maxWidth: '500px', margin: '0 auto 3rem' }}>
-            Experience the unique fusion of Signature Tiramisu, Creamy Cheesecake, and Artisanal Filipino infusions.
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.05rem', marginBottom: '2.5rem', maxWidth: '380px', margin: '0 auto 2.5rem' }}>
+            Experience the soulful sweetness of Boutique Pinoy Desserts, from creamy Ube delights to golden Mango favorites.
           </p>
           
-          <button className="btn btn-primary" onClick={handleStart} style={{ padding: '1.25rem 2.5rem', fontSize: '1.1rem', borderRadius: '20px' }}>
-            Explore Menu <ArrowRight size={22} />
+          <button className="btn btn-primary" onClick={handleStart} style={{ padding: '1rem 2rem', fontSize: '1rem', borderRadius: '18px' }}>
+            Explore Menu <ArrowRight size={20} />
           </button>
         </motion.div>
 
         {/* Hero Illustration / Image Placeholder */}
         <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
           style={{ 
-            marginTop: '4rem', 
+            marginTop: '3.5rem', 
             width: '100%', 
-            maxWidth: '1000px', 
-            aspectRatio: '16/9', 
-            borderRadius: '40px', 
+            aspectRatio: '16/10', 
+            borderRadius: '30px', 
             overflow: 'hidden',
-            boxShadow: 'var(--shadow-lg)',
-            background: 'url(/hero_boutique_pinoy_desserts.png)',
+            boxShadow: 'var(--shadow-md)',
+            background: 'url(/hero_purely_pinoy.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             position: 'relative'
           }}
         >
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.2), transparent)' }}></div>
+          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.1), transparent)' }}></div>
         </motion.div>
       </section>
 
       {/* Features Section */}
-      <section style={{ padding: '8rem 1.5rem', background: 'white' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Boutique Flavors, Pinoy Heart</h2>
-            <p style={{ color: 'var(--text-muted)' }}>We bring elegant global classics and soulful local favorites to your doorstep.</p>
+      <section style={{ padding: '5rem 0', background: 'white' }}>
+        <div style={{ textAlign: 'center', marginBottom: '3.5rem' }}>
+          <h2 style={{ fontSize: '2.2rem', marginBottom: '0.75rem' }}>Boutique Flavors, Pinoy Heart</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Elegance and soulful local favorites delivered to your door.</p>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div className="card" style={{ padding: '2rem', border: 'none', background: 'var(--background)' }}>
+            <div style={{ background: 'var(--primary)', width: '44px', height: '44px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+              <Utensils color="white" size={20} />
+            </div>
+            <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem' }}>Artisan Favorites</h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Indulge in our signature Ube cakes, golden Mango delights, and silky Leche Flan.</p>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
-            <div className="card" style={{ padding: '2.5rem', border: 'none', background: 'var(--background)' }}>
-              <div style={{ background: 'var(--primary)', width: '50px', height: '50px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                <Utensils color="white" size={24} />
-              </div>
-              <h3 style={{ marginBottom: '1rem', fontSize: '1.3rem' }}>Global Classics</h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Indulge in our signature silky Tiramisu and velvety artisanal Cheesecakes.</p>
+          <div className="card" style={{ padding: '2rem', border: 'none', background: 'var(--background)' }}>
+            <div style={{ background: 'var(--primary)', width: '44px', height: '44px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+              <ShoppingBag color="white" size={20} />
             </div>
+            <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem' }}>Boutique Tradition</h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Soulful Filipino recipes reimagined with a modern boutique touch.</p>
+          </div>
 
-            <div className="card" style={{ padding: '2.5rem', border: 'none', background: 'var(--background)' }}>
-              <div style={{ background: 'var(--primary)', width: '50px', height: '50px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                <ShoppingBag color="white" size={24} />
-              </div>
-              <h3 style={{ marginBottom: '1rem', fontSize: '1.3rem' }}>Pinoy Infusions</h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Soulful Filipino ingredients like Ube and Mango reimagined as boutique treats.</p>
+          <div className="card" style={{ padding: '2rem', border: 'none', background: 'var(--background)' }}>
+            <div style={{ background: 'var(--primary)', width: '44px', height: '44px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.25rem' }}>
+              <Truck color="white" size={20} />
             </div>
-
-            <div className="card" style={{ padding: '2.5rem', border: 'none', background: 'var(--background)' }}>
-              <div style={{ background: 'var(--primary)', width: '50px', height: '50px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem' }}>
-                <Truck color="white" size={24} />
-              </div>
-              <h3 style={{ marginBottom: '1rem', fontSize: '1.3rem' }}>Earthy Craft</h3>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Premium, minimalist packaging delivered with exceptional care and boutique style.</p>
-            </div>
+            <h3 style={{ marginBottom: '0.75rem', fontSize: '1.2rem' }}>Earthy Craft</h3>
+            <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Premium packaging delivered with exceptional care and boutique style.</p>
           </div>
         </div>
       </section>
 
       {/* Footer / Admin Entry */}
-      <footer style={{ padding: '6rem 1.5rem', textAlign: 'center', background: 'var(--text-main)', color: 'white' }}>
-        <h2 style={{ fontSize: '2rem', marginBottom: '2rem' }}>Ready to Experience It?</h2>
+      <footer style={{ padding: '5rem 1.5rem', textAlign: 'center', background: 'var(--text-main)', color: 'white', margin: '0 -1.5rem', borderRadius: '40px 40px 0 0' }}>
+        <h2 style={{ fontSize: '1.8rem', marginBottom: '1.5rem' }}>Ready to Experience It?</h2>
         <button className="btn btn-primary" onClick={handleStart} style={{ padding: '1rem 2rem', background: 'var(--primary-light)' }}>
           Order Now <ArrowRight size={20} />
         </button>
         
-        <div style={{ marginTop: '4rem', paddingTop: '4rem', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-          <span style={{ opacity: 0.6 }}>© 2024 EatsGo Delivery</span>
+        <div style={{ marginTop: '3rem', paddingTop: '3rem', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'center', gap: '1.5rem', flexWrap: 'wrap' }}>
+          <span style={{ opacity: 0.6, fontSize: '0.8rem' }}>© 2024 EatsGo Delivery</span>
           <button 
             onClick={() => navigate('/login')} 
-            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
+            style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: '0.8rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <ShieldCheck size={14} /> Admin Portal
           </button>

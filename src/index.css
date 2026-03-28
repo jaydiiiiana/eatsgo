@@ -60,9 +60,29 @@ h1, h2, h3, h4 {
 }
 
 /* Layout System */
-.container {
-  max-width: 800px; /* More focused, app-like width */
+body {
+  background-color: #EFEBE9; /* Soft background for desktop */
+  display: flex;
+  justify-content: center;
+}
+
+#root {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.app-shell {
+  background-color: var(--background);
+  min-height: 100vh;
+  width: 100%;
+  max-width: 500px; /* PHONESTYLE: Exact Super-App width (Grab/Foodpanda) */
   margin: 0 auto;
+  position: relative;
+  box-shadow: 0 0 100px rgba(0,0,0,0.05); /* Soft shadow on desktop */
+}
+
+.container {
   padding: 0 1.5rem;
   width: 100%;
 }
@@ -206,15 +226,18 @@ input:focus {
 .nav-bar {
   position: fixed;
   bottom: 0;
-  left: 0;
-  right: 0;
-  height: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 500px; /* Anchored to mobile shell */
+  height: 75px;
   background: white;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
   z-index: 1000;
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 .nav-item {
@@ -261,30 +284,25 @@ input:focus {
   backdrop-filter: blur(4px);
   z-index: 2000;
   display: flex;
-  align-items: flex-end; /* Bottom sheet for mobile */
+  align-items: flex-end; /* Mobile Bottom Sheet */
   justify-content: center;
 }
 
 .modal-content {
   background: white;
   width: 100%;
-  max-width: 480px;
+  max-width: 500px; /* Matches Super-App shell */
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   padding: 1.5rem;
-  padding-bottom: calc(1.5rem + env(safe-area-inset-bottom));
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
   overflow-y: auto;
   max-height: 90vh;
-  box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
+  box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
 }
 
-@media (min-width: 480px) {
+@media (min-width: 501px) {
   .modal-overlay {
-    align-items: center;
-    padding: 1.5rem;
-  }
-  .modal-content {
-    border-radius: var(--radius-lg);
-    width: 100%;
+    padding-bottom: 0;
   }
 }
 
