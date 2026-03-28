@@ -23,22 +23,25 @@ const LandingPage = () => {
         top: 0, 
         left: 0, 
         right: 0, 
-        padding: '2rem', 
+        padding: '1.5rem', 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center', 
-        zIndex: 10 
+        zIndex: 10,
+        width: '100%',
+        maxWidth: '500px',
+        margin: '0 auto'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <div style={{ background: 'var(--primary)', width: '36px', height: '36px', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ color: 'white', fontWeight: 800, fontSize: '1.2rem' }}>E</span>
+          <div style={{ background: 'var(--primary)', width: '32px', height: '32px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ color: 'white', fontWeight: 800, fontSize: '1rem' }}>E</span>
           </div>
-          <span style={{ fontWeight: 800, fontSize: '1.5rem', color: 'var(--text-main)', letterSpacing: '-0.04em' }}>EatsGo</span>
+          <span style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--text-main)', letterSpacing: '-0.04em' }}>EatsGo</span>
         </div>
         
         <button 
-          onClick={() => navigate('/login')} 
-          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontWeight: 700, cursor: 'pointer', fontSize: '0.95rem' }}
+          onClick={() => navigate(user ? '/profile' : '/login')} 
+          style={{ background: 'transparent', border: 'none', color: 'var(--text-main)', fontWeight: 700, cursor: 'pointer', fontSize: '0.85rem' }}
         >
           {user ? 'My Profile' : 'Sign In'}
         </button>

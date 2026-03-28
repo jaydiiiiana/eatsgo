@@ -137,7 +137,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="animate-fade" style={{ paddingBottom: '100px' }}>
+    <div className="container animate-fade" style={{ paddingBottom: '100px' }}>
       <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', marginTop: '1rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>

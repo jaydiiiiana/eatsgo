@@ -7,6 +7,8 @@ import AuthPage from './auth/AuthPage';
 import AdminDashboard from './admin/AdminDashboard';
 import CartPage from './pages/Cart';
 import Navigation from './components/Navigation';
+import ProfilePage from './pages/Profile';
+import LandingPage from './pages/LandingPage';
 
 const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode, adminOnly?: boolean }) => {
   const { user, isAdmin, loading } = useAuth();
@@ -18,8 +20,6 @@ const ProtectedRoute = ({ children, adminOnly = false }: { children: React.React
   return <>{children}</>;
 };
 
-import LandingPage from './pages/LandingPage';
-
 function App() {
   return (
     <AuthProvider>
@@ -27,37 +27,43 @@ function App() {
         <Router>
           <div className="app-shell">
             <main style={{ minHeight: '100vh' }}>
-              <div className="container" style={{ paddingBottom: '120px', paddingTop: '1.5rem' }}>
-                <Routes>
-                  <Route path="/login" element={<AuthPage />} />
-                  <Route path="/" element={<LandingPage />} />
-                  <Route 
-                    path="/menu" 
-                    element={
-                      <ProtectedRoute>
-                        <Home />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  <Route 
-                    path="/cart" 
-                    element={
-                      <ProtectedRoute>
-                        <CartPage />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  <Route 
-                    path="/admin/*" 
-                    element={
-                      <ProtectedRoute adminOnly>
-                        <AdminDashboard />
-                      </ProtectedRoute>
-                    } 
-                  />
-                  <Route path="*" element={<Navigate to="/" />} />
-                </Routes>
-              </div>
+              <Routes>
+                <Route path="/login" element={<AuthPage />} />
+                <Route path="/" element={<LandingPage />} />
+                <Route 
+                  path="/menu" 
+                  element={
+                    <ProtectedRoute>
+                      <Home />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/cart" 
+                  element={
+                    <ProtectedRoute>
+                      <CartPage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/profile" 
+                  element={
+                    <ProtectedRoute>
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route 
+                  path="/admin/*" 
+                  element={
+                    <ProtectedRoute adminOnly>
+                      <AdminDashboard />
+                    </ProtectedRoute>
+                  } 
+                />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
             </main>
             <Navigation />
           </div>

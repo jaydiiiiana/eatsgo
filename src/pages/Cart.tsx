@@ -124,7 +124,7 @@ const CartPage = () => {
   }
 
   return (
-    <div className="animate-fade" style={{ paddingBottom: '120px' }}>
+    <div className="container animate-fade" style={{ paddingBottom: '120px' }}>
       <header style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2.2rem' }}>Your <span style={{ color: 'var(--primary)' }}>Basket</span></h1>
         <p style={{ color: 'var(--text-muted)' }}>Review your items and checkout</p>

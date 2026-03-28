@@ -41,14 +41,14 @@ const Navigation = () => {
           </div>
           <span style={{ fontWeight: isAdminActive ? 800 : 600, fontSize: '0.7rem' }}>Admin</span>
         </Link>
-      ) : (
-        <div className="nav-item">
-          <div style={{ padding: '6px 16px', borderRadius: '16px', background: 'transparent', marginBottom: '4px' }}>
-            <User size={22} strokeWidth={2} />
-          </div>
-          <span style={{ fontWeight: 600, fontSize: '0.7rem' }}>Profile</span>
+      ) : null}
+
+      <Link to="/profile" className={`nav-item ${isActive('/profile') ? 'active' : ''}`}>
+        <div style={{ padding: '6px 16px', borderRadius: '16px', background: isActive('/profile') ? 'var(--primary-alpha)' : 'transparent', marginBottom: '4px', transition: 'all 0.3s' }}>
+          <User size={22} strokeWidth={isActive('/profile') ? 2.5 : 2} />
         </div>
-      )}
+        <span style={{ fontWeight: isActive('/profile') ? 800 : 600, fontSize: '0.7rem' }}>Profile</span>
+      </Link>
     </nav>
   );
 };

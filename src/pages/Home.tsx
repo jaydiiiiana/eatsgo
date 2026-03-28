@@ -54,7 +54,7 @@ const Home = () => {
   });
 
   return (
-    <div className="animate-fade">
+    <div className="container animate-fade">
       {/* Premium Header */}
       <header style={{ marginBottom: '2rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', cursor: 'pointer' }}>
