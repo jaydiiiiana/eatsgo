@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import { RefreshCw, ClipboardList, Package, Layers, Plus, LogOut, Circle } from 'lucide-react';
+import { RefreshCw, ClipboardList, Package, Layers, Plus, LogOut, Circle, Settings } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import OrderList from './OrderList';
 import Inventory from './Inventory';
 import CategoryManager from './CategoryManager';
+import AdminSettings from './AdminSettings';
 
 interface Order {
   id: string;
@@ -34,7 +35,7 @@ interface Product {
 }
 
 const AdminDashboard = () => {
-  const [activeTab, setActiveTab] = useState<'orders' | 'inventory' | 'categories'>('orders');
+  const [activeTab, setActiveTab] = useState<'orders' | 'inventory' | 'categories' | 'settings'>('orders');
   const [orders, setOrders] = useState<Order[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -196,6 +197,13 @@ const AdminDashboard = () => {
           <Layers size={20} />
           <span>Categories</span>
         </button>
+        <button 
+          className={`admin-tab-item ${activeTab === 'settings' ? 'active' : ''}`}
+          onClick={() => setActiveTab('settings')}
+        >
+          <Settings size={20} />
+          <span>Settings</span>
+        </button>
       </div>
 
       <main>
@@ -229,6 +237,15 @@ const AdminDashboard = () => {
             onDeleteProduct={deleteProduct}
             refreshProducts={fetchProducts}
           />
+        )}
+
+        {activeTab === 'settings' && (
+          <div className="animate-fade">
+            <h2 style={{ marginBottom: '1.5rem' }}>Global Settings</h2>
+            <div className="card glass-morphism" style={{ maxWidth: '600px' }}>
+                <AdminSettings />
+            </div>
+          </div>
         )}
       </main>
     </div>

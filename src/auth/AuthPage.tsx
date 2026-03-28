@@ -40,7 +40,7 @@ const AuthPage = () => {
   };
 
 
-  const handleRegister = async (email: string, pass: string, name: string, contact: string) => {
+  const handleRegister = async (email: string, pass: string, name: string, contact: string, adminKey?: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -58,10 +58,11 @@ const AuthPage = () => {
       if (signUpError) throw signUpError;
       
       if (data.user) {
+        const role = adminKey === 'ADM-EATSGO-2024' ? 'admin' : 'customer';
         await supabase
           .from('profiles')
           .insert([
-            { id: data.user.id, full_name: name, contact_number: contact, role: 'customer' }
+            { id: data.user.id, full_name: name, contact_number: contact, role: role }
           ]);
       }
       

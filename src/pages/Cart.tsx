@@ -5,6 +5,8 @@ import { supabase } from '../lib/supabase';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, ShoppingBag, MapPin, Package, ArrowRight, ShieldCheck } from 'lucide-react';
 
+import emailjs from '@emailjs/browser';
+
 const CartPage = () => {
   const { items, removeFromCart, total, clearCart } = useCart();
   const { user, profile, isEmailVerified } = useAuth();
@@ -26,6 +28,7 @@ const CartPage = () => {
 
     setLoading(true);
     try {
+      // 1. Create order in Supabase
       const { data: order, error: orderError } = await supabase
         .from('orders')
         .insert([{
@@ -55,8 +58,50 @@ const CartPage = () => {
 
       if (itemsError) throw itemsError;
 
+      // 2. Fetch Admin Notification Email from settings
+      const { data: adminSettings } = await supabase
+        .from('settings')
+        .select('value')
+        .eq('key', 'admin_notification_email')
+        .single();
+
+      const adminEmail = adminSettings?.value || 'admin@eatsgo.com';
+
+      // 3. Prepare Email Logic
+      const itemsListStr = items.map(item => 
+        `${item.quantity}x ${item.name} - $${(item.price * item.quantity).toFixed(2)}`
+      ).join('\n');
+
+      const now = new Date();
+      const templateParams = {
+        system_name: 'EatsGo Boutique Delivery',
+        order_id: order.id.slice(0, 8),
+        date: now.toLocaleDateString(),
+        time: now.toLocaleTimeString(),
+        customer_name: profile?.full_name || user.email,
+        customer_contact: profile?.contact_number || '',
+        customer_email: user.email,
+        admin_email: adminEmail,
+        items_list: itemsListStr,
+        total_price: `$${grandTotal.toFixed(2)}`,
+        order_type: orderType.toUpperCase(),
+        delivery_location: orderType === 'meeting' ? meetingLocation : 'N/A (Pickup at Shop)',
+      };
+
+      // 4. Send Email via EmailJS
+      try {
+        await emailjs.send(
+          import.meta.env.VITE_EMAILJS_SERVICE_ID,
+          import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+          templateParams,
+          import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+        );
+      } catch (emailErr) {
+        console.error('Email failed but order was saved:', emailErr);
+      }
+
       clearCart();
-      alert('Order placed successfully!');
+      alert('Order placed successfully! A receipt has been sent to your email.');
       navigate('/menu');
     } catch (err: any) {
       alert('Error placing order: ' + err.message);

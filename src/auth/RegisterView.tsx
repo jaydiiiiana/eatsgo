@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { UserPlus, Mail, Lock, Smartphone } from 'lucide-react';
+import { UserPlus, Mail, Lock, Smartphone, ShieldCheck } from 'lucide-react';
 
 interface RegisterViewProps {
-  onRegister: (email: string, pass: string, name: string, contact: string) => Promise<void>;
+  onRegister: (email: string, pass: string, name: string, contact: string, adminKey?: string) => Promise<void>;
   loading: boolean;
 }
 
@@ -11,6 +11,7 @@ const RegisterView: React.FC<RegisterViewProps> = ({ onRegister, loading }) => {
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
   const [contactNo, setContactNo] = useState('');
+  const [adminKey, setAdminKey] = useState('');
   const [localError, setLocalError] = useState<string | null>(null);
 
   // Password Validation States
@@ -44,7 +45,7 @@ const RegisterView: React.FC<RegisterViewProps> = ({ onRegister, loading }) => {
       return;
     }
 
-    onRegister(email, password, fullName, contactNo);
+    onRegister(email, password, fullName, contactNo, adminKey);
   };
 
   return (
@@ -116,6 +117,19 @@ const RegisterView: React.FC<RegisterViewProps> = ({ onRegister, loading }) => {
           onChange={(e) => setPassword(e.target.value)}
           style={{ paddingLeft: '3.5rem' }}
           required 
+        />
+      </div>
+
+      <div style={{ position: 'relative' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '1.2rem', transform: 'translateY(-50%)', color: 'var(--text-muted)', zIndex: 1 }}>
+          <ShieldCheck size={20} />
+        </div>
+        <input 
+          type="text" 
+          placeholder="Admin Access Key (Optional)" 
+          value={adminKey}
+          onChange={(e) => setAdminKey(e.target.value)}
+          style={{ paddingLeft: '3.5rem' }}
         />
       </div>
 
