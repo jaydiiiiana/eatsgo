@@ -22,20 +22,23 @@ interface AuthContextType {
 }
 
 // Master Admin Mock Constants
+const getMasterEmail = () => localStorage.getItem('eatsgo_admin_email') || 'eatsgo@gmail.com';
+const getMasterName = () => localStorage.getItem('eatsgo_admin_name') || 'EatsGo Master Admin';
+
 const MASTER_ADMIN_ID = 'master-admin-000';
-const MASTER_ADMIN_USER = {
+const MASTER_ADMIN_USER = () => ({
   id: MASTER_ADMIN_ID,
-  email: 'eatsgo@gmail.com',
+  email: getMasterEmail(),
   email_confirmed_at: new Date(2024, 0, 1).toISOString(),
   role: 'authenticated'
-} as any;
+} as any);
 
-const MASTER_ADMIN_PROFILE: Profile = {
+const MASTER_ADMIN_PROFILE = (): Profile => ({
   id: MASTER_ADMIN_ID,
-  full_name: 'EatsGo Master Admin',
+  full_name: getMasterName(),
   contact_number: '09000000000',
   role: 'admin'
-};
+});
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -51,12 +54,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Synchronous recovery from localStorage to prevent loading flash
   const [user, setUser] = useState<User | null>(() => {
     const isMaster = localStorage.getItem('eatsgo_master_session') === 'true';
-    return isMaster ? MASTER_ADMIN_USER : null;
+    return isMaster ? MASTER_ADMIN_USER() : null;
   });
   
   const [profile, setProfile] = useState<Profile | null>(() => {
     const isMaster = localStorage.getItem('eatsgo_master_session') === 'true';
-    return isMaster ? MASTER_ADMIN_PROFILE : null;
+    return isMaster ? MASTER_ADMIN_PROFILE() : null;
   });
 
   const [loading, setLoading] = useState(true);
@@ -98,8 +101,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // If we're already in Master Admin mode from localStorage, don't overwrite with null
         const isMaster = localStorage.getItem('eatsgo_master_session') === 'true';
         if (isMaster) {
-          setUser(MASTER_ADMIN_USER);
-          setProfile(MASTER_ADMIN_PROFILE);
+          setUser(MASTER_ADMIN_USER());
+          setProfile(MASTER_ADMIN_PROFILE());
           setLoading(false);
           return;
         }
@@ -159,8 +162,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const forceAdminLogin = () => {
     localStorage.setItem('eatsgo_master_session', 'true');
-    setUser(MASTER_ADMIN_USER);
-    setProfile(MASTER_ADMIN_PROFILE);
+    setUser(MASTER_ADMIN_USER());
+    setProfile(MASTER_ADMIN_PROFILE());
     setLoading(false);
   };
 
