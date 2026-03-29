@@ -8,6 +8,7 @@ interface Profile {
   id: string;
   full_name: string | null;
   contact_number: string | null;
+  location: string | null;
   role: UserRole;
 }
 
@@ -37,6 +38,7 @@ const MASTER_ADMIN_PROFILE = (): Profile => ({
   id: MASTER_ADMIN_ID,
   full_name: getMasterName(),
   contact_number: '09000000000',
+  location: 'EatsGo Headquarters',
   role: 'admin'
 });
 
@@ -158,6 +160,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);
+    // Hard redirect to clear everything 100%
+    window.location.href = '/';
   };
 
   const forceAdminLogin = () => {
