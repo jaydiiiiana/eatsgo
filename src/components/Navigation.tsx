@@ -14,8 +14,18 @@ const Navigation = () => {
   const isAdminActive = location.pathname.startsWith('/admin');
 
   return (
-    <nav className="nav-bar glass-morphism animate-fade" style={{ borderTop: '1px solid rgba(141, 110, 99, 0.08)', height: '80px' }}>
-      <Link to="/menu" className={`nav-item ${isActive('/menu') ? 'active' : ''}`}>
+    <nav className="nav-bar glass-morphism animate-fade">
+      {/* Brand - Visible on Desktop */}
+      <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', maxWidth: '1200px' }}>
+        <div style={{ display: 'none', alignItems: 'center', gap: '8px' }} className="desktop-logo">
+          <div style={{ background: 'var(--primary)', width: '32px', height: '32px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <span style={{ color: 'white', fontWeight: 800, fontSize: '1rem' }}>E</span>
+          </div>
+          <span style={{ fontWeight: 800, fontSize: '1.25rem', color: 'var(--text-main)', letterSpacing: '-0.04em' }}>EatsGo</span>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'inherit', flex: 1, justifyContent: 'space-around' }}>
+          <Link to="/menu" className={`nav-item ${isActive('/menu') ? 'active' : ''}`}>
         <div style={{ padding: '6px 16px', borderRadius: '16px', background: isActive('/menu') ? 'var(--primary-alpha)' : 'transparent', marginBottom: '4px', transition: 'all 0.3s' }}>
           <HomeIcon size={22} strokeWidth={isActive('/menu') ? 2.5 : 2} />
         </div>
@@ -49,6 +59,8 @@ const Navigation = () => {
         </div>
         <span style={{ fontWeight: isActive('/profile') ? 800 : 600, fontSize: '0.7rem' }}>Profile</span>
       </Link>
+        </div>
+      </div>
     </nav>
   );
 };

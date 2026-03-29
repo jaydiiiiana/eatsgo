@@ -27,6 +27,7 @@ interface Category {
 interface Product {
   id: string;
   name: string;
+  description: string;
   price: number;
   stock_quantity: number;
   category_id: string;
@@ -100,8 +101,14 @@ const AdminDashboard = () => {
 
   const handleAddCategory = async (e: React.FormEvent) => {
     e.preventDefault();
-    const { error } = await supabase.from('categories').insert([{ name: newCategoryName }]);
-    if (!error) {
+    if (!newCategoryName.trim()) return;
+    
+    const { error } = await supabase.from('categories').insert([{ name: newCategoryName.trim() }]);
+    
+    if (error) {
+      console.error('Error adding category:', error);
+      alert('Failed to save category: ' + error.message);
+    } else {
       setNewCategoryName('');
       setShowAddCategory(false);
       fetchCategories();

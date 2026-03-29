@@ -61,35 +61,59 @@ h1, h2, h3, h4 {
 
 /* Layout System */
 body {
-  background-color: #EFEBE9; /* Soft background for desktop */
-  display: flex;
-  justify-content: center;
+  background-color: var(--background);
+  display: block;
 }
 
 #root {
   width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 .app-shell {
   background-color: var(--background);
   min-height: 100vh;
   width: 100%;
-  max-width: 500px; /* PHONESTYLE: Exact Super-App width (Grab/Foodpanda) */
-  margin: 0 auto;
   position: relative;
-  box-shadow: 0 0 100px rgba(0,0,0,0.05); /* Soft shadow on desktop */
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+  width: 100%;
+  padding-bottom: 90px;
+}
+
+@media (min-width: 769px) {
+  main {
+    padding-top: 110px;
+    padding-bottom: 40px;
+  }
 }
 
 .container {
   padding: 0 1.5rem;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .container {
     padding: 0 1.25rem;
+  }
+}
+
+/* Product Grid Responsiveness */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   }
 }
 
@@ -187,14 +211,6 @@ body {
   transform: translateY(-1px);
 }
 
-
-.glass-morphism {
-  background: var(--glass);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--glass-border);
-}
-
 /* For mobile web app feel */
 input, select, textarea {
   width: 100%;
@@ -211,33 +227,38 @@ input:focus {
   border-color: var(--primary);
 }
 
-.card {
-  background: white;
-  border-radius: var(--radius-lg);
-  padding: 1rem;
-  box-shadow: var(--shadow-md);
-  transition: transform 0.2s ease;
-}
-
 .card:active {
   transform: scale(0.98);
 }
 
+/* Navigation System - Adaptive Top/Bottom */
 .nav-bar {
   position: fixed;
   bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
+  right: 0;
   width: 100%;
-  max-width: 500px; /* Anchored to mobile shell */
   height: 75px;
   background: white;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  box-shadow: 0 -4px 30px rgba(0,0,0,0.08);
   z-index: 1000;
   padding-bottom: env(safe-area-inset-bottom);
+}
+
+@media (min-width: 769px) {
+  .nav-bar {
+    top: 0;
+    bottom: auto;
+    height: 85px;
+    padding: 0 2rem;
+    justify-content: center;
+    gap: 4rem;
+    border-bottom: 1px solid rgba(141, 110, 99, 0.1);
+    box-shadow: 0 4px 30px rgba(0,0,0,0.03);
+  }
 }
 
 .nav-item {
@@ -250,8 +271,27 @@ input:focus {
   gap: 4px;
 }
 
-.nav-item.active {
-  color: var(--primary);
+@media (min-width: 769px) {
+  .nav-item {
+    flex-direction: row;
+    font-size: 0.95rem;
+    font-weight: 700;
+    gap: 12px;
+    padding: 10px 20px;
+    border-radius: 16px;
+    transition: all 0.3s;
+    min-width: 120px;
+    justify-content: center;
+  }
+  
+  .nav-item:hover {
+    background: var(--primary-alpha);
+    color: var(--primary);
+  }
+
+  .desktop-logo {
+    display: flex !important;
+  }
 }
 
 .cart-badge {
@@ -272,8 +312,7 @@ input:focus {
   border: 2px solid white;
 }
 
-/* Modal Overlay & Sheet Styles */
-
+/* Modal Overlay & Responsive Sheet */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -281,23 +320,34 @@ input:focus {
   right: 0;
   bottom: 0;
   background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   z-index: 2000;
   display: flex;
-  align-items: flex-end; /* Mobile Bottom Sheet */
+  align-items: flex-end;
   justify-content: center;
 }
 
 .modal-content {
   background: white;
   width: 100%;
-  max-width: 500px; /* Matches Super-App shell */
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  padding: 1.5rem;
+  padding: 2rem;
   padding-bottom: calc(2rem + env(safe-area-inset-bottom));
   overflow-y: auto;
   max-height: 90vh;
   box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+}
+
+@media (min-width: 769px) {
+  .modal-overlay {
+    align-items: center;
+  }
+  
+  .modal-content {
+    max-width: 700px;
+    border-radius: var(--radius-lg);
+    padding-bottom: 2rem;
+  }
 }
 
 @media (min-width: 501px) {
@@ -305,4 +355,3 @@ input:focus {
     padding-bottom: 0;
   }
 }
-

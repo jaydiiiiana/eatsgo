@@ -11,6 +11,7 @@ interface Category {
 interface Product {
   id: string;
   name: string;
+  description: string;
   price: number;
   stock_quantity: number;
   category_id: string;
@@ -33,7 +34,7 @@ const Inventory: React.FC<InventoryProps> = ({
   onUpdateStock, onDeleteProduct, refreshProducts
 }) => {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-  const [formData, setFormData] = useState({ name: '', price: 0, stock: 0, category_id: '' });
+  const [formData, setFormData] = useState({ name: '', description: '', price: 0, stock: 0, category_id: '' });
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -44,13 +45,14 @@ const Inventory: React.FC<InventoryProps> = ({
     if (editingProduct) {
       setFormData({
         name: editingProduct.name,
+        description: editingProduct.description || '',
         price: editingProduct.price,
         stock: editingProduct.stock_quantity,
         category_id: editingProduct.category_id
       });
       setImagePreview(editingProduct.image_url);
     } else {
-      setFormData({ name: '', price: 0, stock: 0, category_id: categories[0]?.id || '' });
+      setFormData({ name: '', description: '', price: 0, stock: 0, category_id: categories[0]?.id || '' });
       setImagePreview(null);
     }
   }, [editingProduct, categories]);
@@ -69,6 +71,10 @@ const Inventory: React.FC<InventoryProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.category_id && categories.length > 0) {
+      formData.category_id = categories[0].id;
+    }
+    
     setLoading(true);
     let publicUrl = editingProduct?.image_url || '';
 
@@ -80,25 +86,25 @@ const Inventory: React.FC<InventoryProps> = ({
         const filePath = `${fileName}`;
 
         const { error: uploadError } = await supabase.storage
-          .from('item_photo')
+          .from('items') // Updated to a standard 'items' bucket or creates one
           .upload(filePath, imageFile);
 
         if (uploadError) throw uploadError;
 
         const { data: urlData } = supabase.storage
-          .from('item_photo')
+          .from('items')
           .getPublicUrl(filePath);
-
         
         publicUrl = urlData.publicUrl;
       }
 
       const productPayload = {
         name: formData.name,
+        description: formData.description,
         price: formData.price,
         stock_quantity: formData.stock,
-        category_id: formData.category_id || categories[0]?.id,
-        image_url: publicUrl || `https://source.unsplash.com/featured/?${formData.name}`
+        category_id: formData.category_id,
+        image_url: publicUrl || `https://source.unsplash.com/featured/?dessert,${formData.name}`
       };
 
       if (editingProduct) {
@@ -204,6 +210,17 @@ const Inventory: React.FC<InventoryProps> = ({
               placeholder="e.g. Classic Burger" 
               value={formData.name} 
               onChange={e => setFormData({...formData, name: e.target.value})} 
+              required 
+            />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontSize: '0.875rem', fontWeight: 600 }}>Description</label>
+            <textarea 
+              placeholder="Describe this delightful treat..." 
+              value={formData.description} 
+              onChange={e => setFormData({...formData, description: e.target.value})} 
+              style={{ minHeight: '100px', resize: 'vertical' }}
               required 
             />
           </div>

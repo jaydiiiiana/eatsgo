@@ -126,14 +126,14 @@ const Home = () => {
       </section>
 
       {/* Product List */}
-      <section style={{ paddingBottom: '100px' }}>
+      <section>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
           <h2 style={{ fontSize: '1.4rem' }}>Recommended for you</h2>
         </div>
         
         {loading ? (
           <div className="product-grid">
-            {[1, 2, 3, 4].map(n => (
+            {[1, 2, 3, 4, 5, 6].map(n => (
               <div key={n} className="card" style={{ height: '300px', opacity: 0.5 }}></div>
             ))}
           </div>
@@ -143,7 +143,7 @@ const Home = () => {
             <p>No items match your search.</p>
           </div>
         ) : (
-          <div className="product-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+          <div className="product-grid">
             {filteredProducts.map(product => (
               <div key={product.id} className="card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ position: 'relative', width: '100%', paddingTop: '65%' }}>
