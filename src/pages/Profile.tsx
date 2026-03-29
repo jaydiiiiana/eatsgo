@@ -67,7 +67,7 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="container animate-fade" style={{ paddingBottom: '110px' }}>
+    <div className="container animate-fade" style={{ paddingBottom: '160px' }}>
       
       {/* Premium Header */}
       <div style={{ textAlign: 'center', marginTop: '1.5rem', marginBottom: '2.5rem' }}>
@@ -114,7 +114,8 @@ const ProfilePage = () => {
               borderRadius: '25px',
               fontSize: '0.8rem',
               fontWeight: 700,
-              gap: '6px'
+              gap: '6px',
+              cursor: 'pointer'
             }}
           >
             <Settings size={14} /> Profile Settings
@@ -174,10 +175,10 @@ const ProfilePage = () => {
             )}
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginTop: '1rem' }}>
-              <button className="btn btn-primary" onClick={handleSave} disabled={loading}>
+              <button className="btn btn-primary" onClick={handleSave} disabled={loading} style={{ cursor: loading ? 'not-allowed' : 'pointer' }}>
                 {loading ? 'Saving...' : <><Check size={18} /> Save</>}
               </button>
-              <button className="btn btn-secondary" onClick={() => setIsEditing(false)}>
+              <button className="btn btn-secondary" onClick={() => setIsEditing(false)} style={{ cursor: 'pointer' }}>
                 Cancel
               </button>
             </div>
@@ -206,12 +207,14 @@ const ProfilePage = () => {
             onClick={() => navigate(isAdmin ? '/admin' : '/menu')} 
             className="btn btn-secondary" 
             style={{ 
+              display: 'flex',
               justifyContent: 'space-between', 
               padding: '1.25rem', 
               width: '100%', 
               background: 'white', 
               boxShadow: 'var(--shadow-sm)',
-              borderRadius: '18px'
+              borderRadius: '18px',
+              cursor: 'pointer'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
@@ -227,16 +230,18 @@ const ProfilePage = () => {
           </button>
 
           <button 
-            onClick={handleLogout} 
+            onClick={!loading ? handleLogout : undefined} 
             className="btn btn-secondary" 
             style={{ 
+              display: 'flex',
               justifyContent: 'space-between', 
               padding: '1.25rem', 
               width: '100%', 
               background: 'white', 
               boxShadow: 'var(--shadow-sm)',
               borderRadius: '18px',
-              color: 'var(--danger)'
+              color: 'var(--danger)',
+              cursor: loading ? 'not-allowed' : 'pointer'
             }}
           >
             <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
