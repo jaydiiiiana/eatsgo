@@ -1,4 +1,6 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabase';
 import { useCart } from '../context/CartContext';
 import { Search, Plus, Star, MapPin, Clock, ChevronRight } from 'lucide-react';
@@ -22,6 +24,8 @@ const Home = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const { addToCart } = useCart();
+  const { profile } = useAuth();
+  const navigate = useNavigate();
 
   const isNewProduct = (dateStr: string) => {
     const createdDate = new Date(dateStr);
@@ -66,14 +70,17 @@ const Home = () => {
     <div className="container animate-fade">
       {/* Premium Header */}
       <header style={{ marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', cursor: 'pointer' }}>
+        <div 
+          onClick={() => navigate('/profile')}
+          style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem', cursor: 'pointer' }}
+        >
           <div style={{ background: 'var(--primary-alpha)', color: 'var(--primary)', padding: '10px', borderRadius: '14px' }}>
             <MapPin size={20} />
           </div>
           <div style={{ flex: 1 }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Deliver to</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-              <span style={{ fontWeight: 800, fontSize: '1.05rem' }}>Current Location</span>
+              <span style={{ fontWeight: 800, fontSize: '1.05rem' }}>{profile?.location || 'Current Location'}</span>
               <ChevronRight size={16} color="var(--primary)" />
             </div>
           </div>

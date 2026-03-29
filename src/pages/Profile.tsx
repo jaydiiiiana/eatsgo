@@ -27,25 +27,35 @@ const ProfilePage = () => {
 
   const handleSave = async () => {
     setLoading(true);
+    console.log('Starting save process...', formData);
+
+    // Safety timeout to unlock button if something hangs
+    const timeout = setTimeout(() => {
+      setLoading(false);
+      alert("Saving is taking longer than expected. Please check your connection.");
+    }, 6000);
+
     try {
       const isMaster = localStorage.getItem('eatsgo_master_session') === 'true';
       
       if (isMaster) {
-        // Update Master Admin Mock Session
+        console.log('Master Admin detected, saving to localStorage');
         localStorage.setItem('eatsgo_admin_email', formData.email);
         localStorage.setItem('eatsgo_admin_name', formData.full_name);
         
-        // Also update DB profile for location and name
-        await supabase
-          .from('profiles')
-          .update({ 
-            full_name: formData.full_name,
-            contact_number: formData.contact_number,
-            location: formData.location 
-          })
-          .eq('id', user?.id);
-      } else {
-        // Standard User Update
+        // Only try DB update if it's NOT the mock ID 'master-admin-000'
+        if (user?.id && user.id !== 'master-admin-000') {
+          await supabase
+            .from('profiles')
+            .update({ 
+              full_name: formData.full_name,
+              contact_number: formData.contact_number,
+              location: formData.location 
+            })
+            .eq('id', user.id);
+        }
+      } else if (user?.id) {
+        console.log('Standard user detected, saving to Supabase');
         const { error } = await supabase
           .from('profiles')
           .update({ 
@@ -53,15 +63,19 @@ const ProfilePage = () => {
             contact_number: formData.contact_number,
             location: formData.location 
           })
-          .eq('id', user?.id);
+          .eq('id', user.id);
         if (error) throw error;
       }
 
+      console.log('Save successful');
+      clearTimeout(timeout);
       setIsEditing(false);
       window.location.reload(); 
     } catch (err: any) {
-      alert(err.message);
+      console.error('Save failed:', err);
+      alert(`Save Error: ${err.message || 'Unknown error'}`);
     } finally {
+      clearTimeout(timeout);
       setLoading(false);
     }
   };
@@ -185,9 +199,9 @@ const ProfilePage = () => {
           </div>
         </div>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1rem' }}>
           
-          {/* Quick Info Grid */}
+          {/* Quick Info Grid - Only visible in view mode */}
           <div className="card glass-morphism" style={{ padding: '1.5rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '5px' }}>Location</p>
@@ -228,35 +242,37 @@ const ProfilePage = () => {
             </div>
             <ChevronRight size={20} color="var(--text-muted)" />
           </button>
-
-          <button 
-            onClick={!loading ? handleLogout : undefined} 
-            className="btn btn-secondary" 
-            style={{ 
-              display: 'flex',
-              justifyContent: 'space-between', 
-              padding: '1.25rem', 
-              width: '100%', 
-              background: 'white', 
-              boxShadow: 'var(--shadow-sm)',
-              borderRadius: '18px',
-              color: 'var(--danger)',
-              cursor: loading ? 'not-allowed' : 'pointer'
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
-              <div style={{ background: 'rgba(239, 83, 80, 0.1)', padding: '10px', borderRadius: '14px' }}>
-                <LogOut size={22} />
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <h4 style={{ fontSize: '1rem', marginBottom: '2px' }}>Sign Out</h4>
-                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Securely end your session</p>
-              </div>
-            </div>
-            <ChevronRight size={20} />
-          </button>
         </div>
       )}
+
+      {/* EMERGENCY EXIT - Sign Out is always at the bottom, reachable even if saving hangs */}
+      <button 
+        onClick={handleLogout} 
+        className="btn btn-secondary" 
+        style={{ 
+          display: 'flex',
+          justifyContent: 'space-between', 
+          padding: '1.25rem', 
+          width: '100%', 
+          background: 'white', 
+          boxShadow: 'var(--shadow-sm)',
+          borderRadius: '18px',
+          color: 'var(--danger)',
+          cursor: 'pointer',
+          marginTop: '1rem'
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem' }}>
+          <div style={{ background: 'rgba(239, 83, 80, 0.1)', padding: '10px', borderRadius: '14px' }}>
+            <LogOut size={22} />
+          </div>
+          <div style={{ textAlign: 'left' }}>
+            <h4 style={{ fontSize: '1rem', marginBottom: '2px' }}>Sign Out</h4>
+            <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>Securely end your session</p>
+          </div>
+        </div>
+        <ChevronRight size={20} />
+      </button>
     </div>
   );
 };
