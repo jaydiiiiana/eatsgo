@@ -12,6 +12,7 @@ interface Product {
   category_id: string;
   category?: { name: string };
   stock_quantity: number;
+  created_at: string;
 }
 
 const Home = () => {
@@ -21,6 +22,14 @@ const Home = () => {
   const [search, setSearch] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const { addToCart } = useCart();
+
+  const isNewProduct = (dateStr: string) => {
+    const createdDate = new Date(dateStr);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - createdDate.getTime());
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays <= 7;
+  };
 
   useEffect(() => {
     fetchData();
@@ -143,6 +152,23 @@ const Home = () => {
                     alt={product.name}
                     style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
+                  {isNewProduct(product.created_at) && (
+                    <div style={{ 
+                      position: 'absolute', 
+                      top: '12px', 
+                      left: '12px', 
+                      background: 'var(--primary)', 
+                      color: 'white', 
+                      padding: '4px 10px', 
+                      borderRadius: '8px', 
+                      fontSize: '0.7rem', 
+                      fontWeight: 800, 
+                      letterSpacing: '0.05em',
+                      boxShadow: '0 4px 10px rgba(0,0,0,0.2)'
+                    }}>
+                      NEW
+                    </div>
+                  )}
                   <div style={{ position: 'absolute', top: '12px', right: '12px', background: 'rgba(255,255,255,0.95)', padding: '5px 10px', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', fontWeight: 800, boxShadow: '0 4px 10px rgba(0,0,0,0.1)' }}>
                     <Star size={14} fill="#D4A373" color="#D4A373" /> 4.9
                   </div>

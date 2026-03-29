@@ -21,6 +21,22 @@ interface AuthContextType {
   forceAdminLogin: () => void;
 }
 
+// Master Admin Mock Constants
+const MASTER_ADMIN_ID = 'master-admin-000';
+const MASTER_ADMIN_USER = {
+  id: MASTER_ADMIN_ID,
+  email: 'eatsgo@gmail.com',
+  email_confirmed_at: new Date(2024, 0, 1).toISOString(),
+  role: 'authenticated'
+} as any;
+
+const MASTER_ADMIN_PROFILE: Profile = {
+  id: MASTER_ADMIN_ID,
+  full_name: 'EatsGo Master Admin',
+  contact_number: '09000000000',
+  role: 'admin'
+};
+
 const AuthContext = createContext<AuthContextType>({
   user: null,
   profile: null,
@@ -32,11 +48,25 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<Profile | null>(null);
+  // Synchronous recovery from localStorage to prevent loading flash
+  const [user, setUser] = useState<User | null>(() => {
+    const isMaster = localStorage.getItem('eatsgo_master_session') === 'true';
+    return isMaster ? MASTER_ADMIN_USER : null;
+  });
+  
+  const [profile, setProfile] = useState<Profile | null>(() => {
+    const isMaster = localStorage.getItem('eatsgo_master_session') === 'true';
+    return isMaster ? MASTER_ADMIN_PROFILE : null;
+  });
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // 1. Safety Watchdog - Ensure loading state never hangs indefinitely
+    const watchdog = setTimeout(() => {
+      setLoading(false);
+    }, 4000); // 4 seconds max wait
+
     const fetchProfile = async (userId: string) => {
       try {
         const { data, error } = await supabase
@@ -65,17 +95,29 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         const { data: { session }, error: sessionError } = await supabase.auth.getSession();
         if (sessionError) throw sessionError;
 
+        // If we're already in Master Admin mode from localStorage, don't overwrite with null
+        const isMaster = localStorage.getItem('eatsgo_master_session') === 'true';
+        if (isMaster) {
+          setUser(MASTER_ADMIN_USER);
+          setProfile(MASTER_ADMIN_PROFILE);
+          setLoading(false);
+          return;
+        }
+
         setUser(session?.user ?? null);
-        
         if (session?.user) {
           await fetchProfile(session.user.id);
         }
       } catch (err) {
         console.error('Error during auth setup:', err);
-        setUser(null);
-        setProfile(null);
+        // Only clear if not in Master mode
+        if (localStorage.getItem('eatsgo_master_session') !== 'true') {
+          setUser(null);
+          setProfile(null);
+        }
       } finally {
         setLoading(false);
+        clearTimeout(watchdog);
       }
     };
 
@@ -83,8 +125,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
       try {
-        // If it's a mock user (Master Admin), don't overwrite it with null
-        if (user?.id === 'master-admin-000' && !session) return;
+        const isMaster = localStorage.getItem('eatsgo_master_session') === 'true';
+        if (isMaster && !session) return; // Keep master session alive
 
         setUser(session?.user ?? null);
         if (session?.user) {
@@ -99,36 +141,26 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     });
 
-    return () => subscription.unsubscribe();
+    return () => {
+      subscription.unsubscribe();
+      clearTimeout(watchdog);
+    };
   }, []);
 
   const isAdmin = profile?.role === 'admin';
   const isEmailVerified = !!user?.email_confirmed_at;
 
   const signOut = async () => {
+    localStorage.removeItem('eatsgo_master_session');
     await supabase.auth.signOut();
     setUser(null);
     setProfile(null);
   };
 
   const forceAdminLogin = () => {
-    // Generate a secure mock session
-    const mockUser = {
-      id: 'master-admin-000',
-      email: 'eatsgo@gmail.com',
-      email_confirmed_at: new Date().toISOString(),
-      role: 'authenticated'
-    } as any;
-    
-    const mockProfile = {
-      id: 'master-admin-000',
-      full_name: 'EatsGo Master Admin',
-      contact_number: '09000000000',
-      role: 'admin' as UserRole
-    };
-
-    setUser(mockUser);
-    setProfile(mockProfile);
+    localStorage.setItem('eatsgo_master_session', 'true');
+    setUser(MASTER_ADMIN_USER);
+    setProfile(MASTER_ADMIN_PROFILE);
     setLoading(false);
   };
 
